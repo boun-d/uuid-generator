@@ -1,8 +1,16 @@
 <script lang="ts">
 	import { v1 as uuidV1, v4 as uuidV4, v7 as uuidV7 } from 'uuid';
 	import { fly } from 'svelte/transition';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';  // Add this import at the top
 
-	const useVersion = 4;
+	const decideVersion = (url: URL) => {
+		const version = url.searchParams.get('version') ?? '';
+		if (['1', '4', '7'].includes(version)) return parseInt(version);
+		return 4;
+	}
+
+	const useVersion = decideVersion(page.url);
 
 	let expanded = $state(false);
 	let currentVersion = $state(useVersion);
@@ -66,6 +74,8 @@
 									onclick={() => {
 										expanded = false;
 										currentVersion = version;
+										page.url.searchParams.set('version', version.toString());
+										goto(`?${page.url.searchParams.toString()}`);
 									}}
 									class="z-[10] h-12 w-12 rounded-full bg-[#819DD1] text-white transition-colors hover:cursor-pointer hover:bg-[#4B73BD]"
 								>
