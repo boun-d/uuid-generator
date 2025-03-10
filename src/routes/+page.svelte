@@ -14,6 +14,7 @@
 
 	let expanded = $state(false);
 	let currentVersion = $state(useVersion);
+	let copyText = $state("copy");
 
 	let uuid = $state(generateNewUUID(useVersion));
 	$effect(() => {
@@ -70,7 +71,7 @@
 						{#each otherVersions as version, i}
 							{#if expanded}
 								<button
-									transition:fly={{ x: -56 * (i + 1), duration: 500, opacity: 50 }}
+									transition:fly={{ x: -56 * (i + 1), duration: 500 }}
 									onclick={() => {
 										expanded = false;
 										currentVersion = version;
@@ -86,9 +87,14 @@
 					</div>
 					<div class="flex-grow"></div>
 					<button
-						class="h-6 w-12 rounded-full bg-[#819DD1] text-xs text-white transition-colors hover:cursor-pointer hover:bg-[#4B73BD]"
+						onclick={() => {
+							navigator.clipboard.writeText(uuid);
+							copyText = "copied!";
+							setTimeout(() => { copyText = "copy" }, 3000);
+						}}
+						class="h-6 pr-2 pl-2 rounded-full bg-[#819DD1] text-xs text-white transition-colors hover:cursor-pointer hover:bg-[#4B73BD]"
 					>
-						copy
+						{copyText}
 					</button>
 					<div class="w-16"></div>
 				</div>
