@@ -29,17 +29,16 @@
 		<div class="flex items-center gap-4">
 			<!-- UUID container -->
 			<div
-				class="w-[calc(100vw-120px)] sm:w-[calc(100vw-32px)] max-w-[700px] rounded-lg bg-[#8B7355] p-3 text-center text-white "
+				class="w-[calc(100vw-120px)] max-w-[700px] rounded-lg bg-[#8B7355] p-3 text-center text-white sm:w-[calc(100vw-32px)]"
 			>
 				<span class="font-mono text-2xl">{uuid}</span>
 			</div>
-
 			<!-- Button -->
 			<button
 				onclick={() => (uuid = generateNewUUID(currentVersion))}
-				class="flex h-12 w-12 items-center justify-center rounded-full bg-[#4B73BD] text-white transition-colors hover:bg-[#7A6347]"
+				class="flex h-12 w-12 items-center justify-center rounded-full bg-[#4B73BD] text-white transition-colors hover:cursor-pointer hover:bg-[#7A6347]"
 			>
-				↻
+			<img src="/refresh.svg" alt="Refresh" class="h-6 w-6" />
 			</button>
 		</div>
 		<div class="absolute -bottom-4 w-full">
@@ -48,37 +47,40 @@
 					<div
 						role="button"
 						tabindex="0"
-						class="flex flex-col gap-2"
+						class="flex flex-row gap-2"
 						onmouseenter={() => (expanded = true)}
 						onmouseleave={() => (expanded = false)}
 					>
 						<button
-							class="z-[20] h-12 w-12 rounded-full bg-[#4B73BD] text-white transition-colors hover:bg-[#7A6347]"
+							onclick={() => {
+								expanded = false;
+							}}
+							class="z-20 h-12 w-12 rounded-full bg-[#819DD1] text-white transition-colors hover:cursor-pointer hover:bg-[#4B73BD]"
 						>
 							v{currentVersion}
 						</button>
 						{#each otherVersions as version, i}
 							{#if expanded}
 								<button
-									transition:fly={{ y: -56 * (i + 1), duration: 500, opacity: 50 }}
+									transition:fly={{ x: -56 * (i + 1), duration: 500, opacity: 50 }}
 									onclick={() => {
 										expanded = false;
 										currentVersion = version;
 									}}
-									class="z-[10] h-12 w-12 rounded-full opacity-50 bg-[#8B7355] text-white transition-colors hover:bg-[#7A6347]"
+									class="z-[10] h-12 w-12 rounded-full bg-[#819DD1] text-white transition-colors hover:cursor-pointer hover:bg-[#4B73BD]"
 								>
 									v{version}
 								</button>
 							{/if}
 						{/each}
 					</div>
-                    <div class="flex-grow"></div>
+					<div class="flex-grow"></div>
 					<button
-						class="h-6 w-12 text-xs rounded-full bg-[#4B73BD] text-white transition-colors hover:bg-[#7A6347]"
+						class="h-6 w-12 rounded-full bg-[#819DD1] text-xs text-white transition-colors hover:cursor-pointer hover:bg-[#4B73BD]"
 					>
 						copy
 					</button>
-                    <div class="w-16"></div>
+					<div class="w-16"></div>
 				</div>
 			</div>
 		</div>
