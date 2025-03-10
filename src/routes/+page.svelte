@@ -2,7 +2,9 @@
 	import { v1 as uuidV1, v4 as uuidV4, v7 as uuidV7 } from 'uuid';
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/state';
-	import { goto } from '$app/navigation';  // Add this import at the top
+	import { goto } from '$app/navigation';
+
+	import { history } from '$lib/state.svelte';
 
 	const decideVersion = (url: URL) => {
 		const version = url.searchParams.get('version') ?? '';
@@ -10,25 +12,26 @@
 		return 4;
 	}
 
-	const useVersion = decideVersion(page.url);
-
-	let expanded = $state(false);
-	let currentVersion = $state(useVersion);
-	let copyText = $state("copy");
-
-	let uuid = $state(generateNewUUID(useVersion));
-	$effect(() => {
-		uuid = generateNewUUID(currentVersion);
-	});
-
-	let otherVersions = $derived([1, 4, 7].filter((version) => version !== currentVersion));
-
 	function generateNewUUID(version: number) {
 		if (version === 1) return uuidV1();
 		if (version === 4) return uuidV4();
 		if (version === 7) return uuidV7();
 		return uuidV4();
 	}
+
+	const useVersion = decideVersion(page.url);
+	const initUUID = generateNewUUID(useVersion);
+
+	let currentVersion = $state(useVersion);
+	let uuid = $state(initUUID);
+
+	let expanded = $state(false);
+	let copyText = $state("copy");
+
+	let otherVersions = $derived([1, 4, 7].filter((version) => version !== currentVersion));
+
+	$effect(() => { uuid = generateNewUUID(currentVersion) });
+	$effect(() => { if (!history.includes(uuid)) history.push(uuid) });
 </script>
 
 <div class="relative grid h-[calc(100vh-80px)] place-items-center">
@@ -44,7 +47,7 @@
 			</div>
 			<!-- Button -->
 			<button
-				onclick={() => (uuid = generateNewUUID(currentVersion))}
+				onclick={() => { uuid = generateNewUUID(currentVersion) }}
 				class="flex h-12 w-12 items-center justify-center rounded-full bg-[#4B73BD] text-white transition-colors hover:cursor-pointer hover:bg-[#7A6347]"
 			>
 			<img src="/refresh.svg" alt="Refresh" class="h-6 w-6" />
@@ -62,7 +65,7 @@
 					>
 						<button
 							onclick={() => {
-								expanded = false;
+								expanded = !expanded;
 							}}
 							class="z-20 h-12 w-12 rounded-full bg-[#819DD1] text-white transition-colors hover:cursor-pointer hover:bg-[#4B73BD]"
 						>
