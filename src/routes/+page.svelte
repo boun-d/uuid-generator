@@ -41,7 +41,7 @@
 		<div class="flex items-center gap-4">
 			<!-- UUID container -->
 			<div
-				class="w-[calc(100vw-120px)] max-w-[700px] rounded-lg bg-[#8B7355] p-3 text-center text-white sm:w-[calc(100vw-32px)]"
+				class="w-[calc(100vw-10rem)] max-w-[700px] rounded-lg bg-[#8B7355] p-3 text-center text-white sm:w-[calc(100vw-32px)]"
 			>
 				<span class="font-mono text-2xl">{uuid}</span>
 			</div>

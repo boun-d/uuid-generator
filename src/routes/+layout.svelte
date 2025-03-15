@@ -9,16 +9,15 @@
 
 <nav class="fixed z-30 w-full">
 	<button
-		class="m-8 flex h-12 w-12 items-center justify-center rounded-full bg-[#4B73BD] text-white transition-colors hover:cursor-pointer hover:bg-[#7A6347]"
+		class="m-6 flex h-12 w-12 items-center justify-center rounded-full bg-[#4B73BD] text-white transition-colors hover:cursor-pointer hover:bg-[#7A6347]"
 		onclick={() => (isSidebarOpen = !isSidebarOpen)}
 	>
 		<img src="/menu.svg" alt="Menu" class="h-6 w-6" />
 	</button>
-
 	{#if isSidebarOpen}
 		<div
 			transition:fly={{ x: -450, duration: 700 }}
-			class="fixed inset-4 flex h-[calc(100dvh-2rem)] w-80 flex-col rounded-lg bg-[#C7BAB0] p-4 shadow-md"
+			class="fixed inset-6 flex max-h-[calc(100dvh-2rem)] w-80 max-sm:w-[calc(100vw-3rem)] flex-col rounded-lg bg-[#C7BAB0] p-4 shadow-md"
 		>
 			<div class="flex flex-row gap-4">
 				<h1 class="font-golos ml-2 text-2xl font-bold text-black">History</h1>
@@ -64,5 +63,7 @@
 </nav>
 
 <main>
+	<div class="ml-8 mr-8">
 	{@render children()}
+</div>
 </main>
